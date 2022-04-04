@@ -5,17 +5,17 @@ const caminhos = ['trilha', 'atalho'];
 
 let avent = {
 vitalidade: 100,
-fome: -20,
+fome: 0,
 frio: 10,
 
 caivitalidade: function(){
-    if (this.fome >= 30 && this.fome < 50){
+    if (this.fome >= 10 && this.fome < 30){
         this.vitalidade -= 20;
         console.log('Cuidado! A sua fome está em um nível em que fará você perder 20 pontos de vitalidade a cada rodada!');
-    } else if (this.fome >= 50 && this.fome < 70){
+    } else if (this.fome >= 30 && this.fome < 50){
         this.vitalidade -= 40;
         console.log('Atenção! A sua fome está em um nível crítico você perderá 40 pontos de vitalidade a cada rodada!');
-    } else if (this.fome >= 70){
+    } else if (this.fome >= 50){
         this.vitalidade -= 60;
         console.log('URGENTE! A sua fome está em um nível extremamente crítico e você perderá 60 pontos de vitalidade a cada rodada!');
     };
@@ -202,7 +202,7 @@ while (jogar == 'sim'){
 
     tempo = 24;
     avent.vitalidade = 100;
-    avent.fome = -20;
+    avent.fome = 0;
     avent.frio = 10;
 
     jogar = prompt('Deseja jogar novamente? ');
