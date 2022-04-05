@@ -1,25 +1,28 @@
 console.clear();
 const prompt = require('prompt-sync')();
 
+//aqui declaro os caminhos possíveis do usuário
 const caminhos = ['trilha', 'atalho'];
 
+//aqui entram os status do aventureiro assim como as funções para checar e diminuir alguns status.
+//a proposta é que quanto mais fome e frio o aventureiro tem, mais vitalidade ele perde.
 let avent = {
 vitalidade: 100,
 fome: 0,
 frio: 10,
 
 caivitalidade: function(){
-    if (this.fome >= 10 && this.fome < 30){
+    if (this.fome >= 50 && this.fome < 70){
         this.vitalidade -= 20;
         console.log('Cuidado! A sua fome está em um nível em que fará você perder 20 pontos de vitalidade a cada rodada!');
-    } else if (this.fome >= 30 && this.fome < 50){
+    } else if (this.fome >= 70 && this.fome < 90){
         this.vitalidade -= 40;
         console.log('Atenção! A sua fome está em um nível crítico você perderá 40 pontos de vitalidade a cada rodada!');
-    } else if (this.fome >= 50){
+    } else if (this.fome >= 90){
         this.vitalidade -= 60;
         console.log('URGENTE! A sua fome está em um nível extremamente crítico e você perderá 60 pontos de vitalidade a cada rodada!');
     };
-    if (this.frio >= 30){
+    if (this.frio >= 30 && this.frio < 50){
         this.vitalidade -= 15;
         console.log('Cuidado! Você está com muito frio e perderá 15 pontos de vitalidade a cada rodada!');
     } else if (this.frio >= 50 && this.frio < 70){
@@ -38,6 +41,7 @@ checavitalidade: function(){
 },
 };
 
+//aqui declaro o tempo que o usuário tem pra conseguir chegar ao objetivo. Logo após temos a função para checar esse tempo e finalizar o jogo caso o tempo chegue a zero.
 let tempo = 24;
 
 function checatempo(){
@@ -46,6 +50,7 @@ function checatempo(){
     };
 };
 
+//função para mostrar o status do aventureiro sempre que necessário.
 function mostrastatus(){
     console.log(`
         Você tem ${tempo} horas para chegar no seu destino final.
@@ -55,7 +60,8 @@ function mostrastatus(){
         `);
 };
 
-// Alguns eventos aleatórios se repetem na array para que a probabilidade deles acontecerem seja aumentada.
+//aqui temos a função para um evento aleatório que irá acontecer caso o caminho escolhido seja o atalho. Cada evento vai ter uma penalidade de status diferente, sendo uma delas a morte.
+//alguns eventos aleatórios se repetem na array para que a probabilidade deles acontecerem seja aumentada.
 function sorteiaevento(){
     const listaeventos = ['Nevasca', 'Chuva', 'Animal Selvagem', 'Chuva', 'Vendaval', 'Animal Selvagem', 'Chuva', 'Vendaval', 'Chuva', 'Chuva'];
 
@@ -70,7 +76,7 @@ function sorteiaevento(){
     } else if (sorteio == 1 || sorteio == 3 || sorteio == 6 || sorteio == 8 || sorteio == 9) {
         eventoaleatorio = listaeventos[1];
         console.log('Começa uma forte chuva, o que faz com que suas roupas fiquem molhadas e você acumule frio mais rapidamente.');
-        avent.frio =+ 10;
+        avent.frio += 10;
     } else if (sorteio == 2 || sorteio == 5) {
         eventoaleatorio = listaeventos[2];
         console.log('Você encontra um animal selvagem que está bloqueando o caminho, você não tem escolha a não ser entrar em luta corporal com ele. Você vence, mas perde 30 pontos de vitalidade.');
@@ -86,6 +92,7 @@ let jogar = 'sim';
 
 const nome = prompt('Por favor, digite o seu nome: ');
 
+//ao chegar no final do jogo, o usuário pode escolher jogar novamente, por isso o laço while aqui.
 while (jogar == 'sim'){
     console.log(`Olá ${nome}! Seja muito bem vinda(o) à Caça ao tesouro na Montanha Gelada!
     Há aproximadamente 3900 anos, do dia para a noite surgiu uma montanha nas Terras Distantes. Essa montanha estava coberta em uma névoa espessa e congelante tornando quase impossível de respirar ao adentrar em seu território. Curiosos de todos os sete cantos do mundo vieram para tentar desbravar o inóspito e temido lugar.
@@ -112,6 +119,7 @@ while (jogar == 'sim'){
     prompt('Aperte enter para começar a sua aventura!');
     console.log();
 
+    //aqui temos o evento principal da história, que é a escolha do caminho e chegada em cada acampamento. Como são 4 acampamentos usei o for para que tivesse a repetição desse evento por 4 vezes.
     principal: for (i = 0; i < 4; i++){
         direcao = prompt('Você optará pela trilha ou pelo atalho? ').toLowerCase();
         console.log();
@@ -185,6 +193,7 @@ while (jogar == 'sim'){
         };
     };
 
+    //aqui temos os finais possíveis do jogo.
     if (avent.vitalidade <= 0){
         console.log('Infelizmente você não soube cuidar de si mesma(o), a sua vitalidade acabou. Você morreu!');
     } else if (tempo <= 0){
@@ -200,6 +209,7 @@ while (jogar == 'sim'){
         `);
     };
 
+    //antes do usuário poder recomeçar o jogo volto os status para os valores iniciais.
     tempo = 24;
     avent.vitalidade = 100;
     avent.fome = 0;
